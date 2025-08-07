@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Invoice {{.OrderCode}}</title>
+</head>
+<body>
+  <h1>Invoice: {{.OrderCode}}</h1>
+  <p><strong>Customer:</strong> {{.CustomerName}}</p>
+  <p><strong>Address:</strong> {{.Address}}</p>
+  <p><strong>Phone:</strong> {{.Phone}}</p>
+
+  <table border="1" cellspacing="0" cellpadding="8">
+    <thead>
+      <tr>
+        <th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .Items}}
+      <tr>
+        <td>{{.Name}}</td>
+        <td>{{.Price}}</td>
+        <td>{{.Quantity}}</td>
+        <td>{{.Subtotal}}</td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+
+  <p><strong>Total:</strong> {{.TotalAmount}}</p>
+</body>
+</html>
