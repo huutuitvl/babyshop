@@ -27,9 +27,9 @@ func main() {
 	db.AutoMigrate(&domain.Order{}, &domain.OrderItem{})
 	db.AutoMigrate(&domain.ProductImage{})
 
-	config.SeedProducts(db)
-	config.SeedAdminUser(db)
-	config.SeedDummyOrders(db)
+	// config.SeedProducts(db)
+	// config.SeedAdminUser(db)
+	// config.SeedDummyOrders(db)
 
 	// Register authentication HTTP handlers/routes
 	http.NewAuthHandler(r, db)
@@ -38,6 +38,7 @@ func main() {
 	// Set up repository and usecase for Product
 	productRepo := repository.NewProductRepository(db)
 	productUC := usecase.NewProductUsecase(productRepo)
+	
 	// Register product HTTP handlers/routes
 	http.NewProductHandler(r, productUC)
 

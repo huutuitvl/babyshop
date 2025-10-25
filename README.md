@@ -37,3 +37,6 @@ docker-compose down
 docker-compose up -d
 ```
 <!-- These commands remove the old MySQL data and restart the service. -->
+#  built
+docker compose up --build
+docker-compose build --no-cache

@@ -1,17 +1,34 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: babyshop-app
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - db
     restart: always
-    container_name: babyshop-mysql
+    volumes:
+      - .:/app
+  db:
+    image: mysql:8.0
+    container_name: babyshop-db
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: babyshop
+      MYSQL_USER: babyshop
+      MYSQL_PASSWORD: babyshop
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./dump-babyshop-202507222240.sql:/docker-entrypoint-initdb.d/dump.sql
+      - db_data:/var/lib/mysql
 
 volumes:
-  mysql_data:
+  db_data:

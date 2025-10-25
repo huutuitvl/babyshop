@@ -3,15 +3,15 @@ package http
 import (
 	"babyshop/internal/domain"
 	"babyshop/internal/infrastructure"
-	"babyshop/internal/module/invoice/pdf"
+	// "babyshop/internal/module/invoice/pdf"
 	"net/http"
 
 	"babyshop/internal/utils"
 
-	"fmt"
+	// "fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jung-kurt/gofpdf"
+	// "github.com/jung-kurt/gofpdf"
 	"gorm.io/gorm"
 )
 
@@ -37,7 +37,7 @@ func NewAdminHandler(r *gin.Engine, db *gorm.DB) {
 	group.GET("/orders", h.ListOrders)
 	group.GET("/orders/:id", h.GetOrder)
 	group.PUT("/orders/:id/status", h.UpdateOrderStatus)
-	group.GET("/orders/:id/export", h.ExportOrderPDF)
+	// group.GET("/orders/:id/export", h.ExportOrderPDF)
 
 
 	superAdminGroup := r.Group("/superadmin", JWTMiddleware(), RoleMiddleware("super_admin"))
@@ -301,40 +301,40 @@ func (h *AdminHandler) UploadProductImage(c *gin.Context) {
 	c.JSON(200, img)
 }
 
-func (h *AdminHandler) ExportOrderPDF(c *gin.Context) {
-	orderID := c.Param("id")
-	var order domain.Order
+// func (h *AdminHandler) ExportOrderPDF(c *gin.Context) {
+// 	orderID := c.Param("id")
+// 	var order domain.Order
 
-	if err := h.DB.Preload("User").Preload("Items.Product").First(&order, orderID).Error; err != nil {
-		c.JSON(404, gin.H{"error": "Order not found"})
-		return
-	}
+// 	if err := h.DB.Preload("User").Preload("Items.Product").First(&order, orderID).Error; err != nil {
+// 		c.JSON(404, gin.H{"error": "Order not found"})
+// 		return
+// 	}
 
-	data := pdf.InvoiceViewData{
-		OrderCode:    fmt.Sprintf("INV%05d", order.ID),
-		CustomerName: order.User.Name,
-		Address:      order.User.Address,
-		Phone:        order.User.Phone,
-		TotalAmount:  order.TotalPrice,
-	}
+// 	data := pdf.InvoiceViewData{
+// 		OrderCode:    fmt.Sprintf("INV%05d", order.ID),
+// 		CustomerName: order.User.Name,
+// 		Address:      order.User.Address,
+// 		Phone:        order.User.Phone,
+// 		TotalAmount:  order.TotalPrice,
+// 	}
 
-	for _, item := range order.Items {
-		data.Items = append(data.Items, pdf.InvoiceItem{
-			Name:     item.Product.Name,
-			Price:    item.Price,
-			Quantity: item.Quantity,
-			Subtotal: item.Subtotal,
-		})
-	}
+// 	for _, item := range order.Items {
+// 		data.Items = append(data.Items, pdf.InvoiceItem{
+// 			Name:     item.Product.Name,
+// 			Price:    item.Price,
+// 			Quantity: item.Quantity,
+// 			Subtotal: item.Subtotal,
+// 		})
+// 	}
 
-	pdfPath, err := pdf.ExportInvoice(data)
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
+// 	pdfPath, err := pdf.ExportInvoice(data)
+// 	if err != nil {
+// 		c.JSON(500, gin.H{"error": err.Error()})
+// 		return
+// 	}
 
-	c.FileAttachment(pdfPath, filepath.Base(pdfPath))
-}
+// 	c.FileAttachment(pdfPath, filepath.Base(pdfPath))
+// }
 
 
 

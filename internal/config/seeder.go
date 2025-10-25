@@ -31,23 +31,23 @@ func SeedAdminUser(db *gorm.DB) {
 	db.FirstOrCreate(&admin, domain.User{Email: admin.Email})
 }
 
-func SeedDummyOrders(db *gorm.DB) {
-	var user domain.User
-	db.First(&user)
+// func SeedDummyOrders(db *gorm.DB) {
+// 	var user domain.User
+// 	db.First(&user)
 
-	var p1, p2 domain.Product
-	db.First(&p1)
-	db.Offset(1).First(&p2)
+// 	var p1, p2 domain.Product
+// 	db.First(&p1)
+// 	db.Offset(1).First(&p2)
 
-	order := domain.Order{
-		UserID:     user.ID,
-		TotalPrice: p1.Price + p2.Price,
-		Status:     "pending",
-		Items: []domain.OrderItem{
-			{ProductID: p1.ID, Qty: 1, UnitPrice: p1.Price},
-			{ProductID: p2.ID, Qty: 1, UnitPrice: p2.Price},
-		},
-	}
+// 	order := domain.Order{
+// 		UserID:     user.ID,
+// 		TotalPrice: p1.Price + p2.Price,
+// 		Status:     "pending",
+// 		Items: []domain.OrderItem{
+// 			{ProductID: p1.ID, Quantity: 1, UnitPrice: p1.Price},
+// 			{ProductID: p2.ID, Quantity: 1, UnitPrice: p2.Price},
+// 		},
+// 	}
 
-	db.Create(&order)
-}
+// 	db.Create(&order)
+// }
